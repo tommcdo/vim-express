@@ -1,10 +1,10 @@
 express.vim
 ===========
 
-express.vim defines an operator, `g=`, that allows you to change text
-according to a VimL |expression|. Once invoked, an expression will be
-prompted. In the expression, `v:val` will represent the text being operated
-on (similar to |map()|).
+express.vim defines an operator, `g=`, that allows you to change text according
+to a VimL expression. Once invoked, an expression will be prompted. In the
+expression, `v:val` will represent the text being operated on (similar to Vim's
+map() function).
 
 Mappings
 --------
