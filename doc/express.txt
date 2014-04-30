@@ -14,6 +14,7 @@ on (similar to |map()|).
 
 MAPPINGS                                        *express-mappings*
 
+                                                *g=*
 g={motion}              Replace the text defined by {motion} with the value of
                         an expression. The expression is entered at the
                         command-line (with an '=' prompt). The original text
