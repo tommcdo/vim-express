@@ -20,6 +20,8 @@ g={motion}              Replace the text defined by {motion} with the value of
                         command-line (with an '=' prompt). The original text
                         will populate the value of `v:val` within the
                         expression.
+                                                *g==*
+g=={motion}             Like |g=|, but for the current line. |linewise|
 
 EXAMPLES                                        *express-examples*
 

@@ -25,6 +25,8 @@ endfunction
 
 nnoremap <silent> <Plug>(ExpressRepeat) .
 nnoremap <silent> <Plug>(Express) :<C-U>set operatorfunc=<SID>express<CR>g@
+nnoremap <silent> <Plug>(ExpressLine) :<C-U>set operatorfunc=<SID>express<CR>g@_
 vnoremap <silent> <Plug>(Express) :<C-U>call <SID>express(visualmode(), 1)<CR>
 nmap g= <Plug>(Express)
+nmap g== <Plug>(ExpressLine)
 vmap g= <Plug>(Express)
