@@ -1,5 +1,8 @@
 function! s:express(type, ...)
 	let expression = input('=', '', 'expression')
+	if expression =~? '^\([gswbv]:\)\?[a-z][a-z0-9#:_]\+$'
+		let expression = expression.'(v:val)'
+	endif
 	let a_reg = @a
 	let selection = &selection
 	set selection=inclusive
