@@ -23,10 +23,21 @@ function! s:express(type, ...)
 	let @a = a_reg
 endfunction
 
+function! s:create_map(mode, lhs, rhs)
+	if !hasmapto(a:rhs, a:mode)
+		execute a:mode.'map' a:lhs a:rhs
+	endif
+endfunction
+
 nnoremap <silent> <Plug>(ExpressRepeat) .
 nnoremap <silent> <Plug>(Express) :<C-U>set operatorfunc=<SID>express<CR>g@
 nnoremap <silent> <Plug>(ExpressLine) :<C-U>set operatorfunc=<SID>express<CR>g@_
 vnoremap <silent> <Plug>(Express) :<C-U>call <SID>express(visualmode(), 1)<CR>
-nmap g= <Plug>(Express)
-nmap g== <Plug>(ExpressLine)
-vmap g= <Plug>(Express)
+
+if exists('g:express_no_mappings')
+	finish
+endif
+
+call s:create_map('n', 'g=', '<Plug>(Express)')
+call s:create_map('n', 'g==', '<Plug>(ExpressLine)')
+call s:create_map('v', 'g=', '<Plug>(Express)')

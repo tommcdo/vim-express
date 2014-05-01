@@ -38,6 +38,26 @@ The resulting text will be:
 
     Hi, my name is "John Jones"
 
+SETTINGS                                        *express-settings*
+
+To change the default mappings, simply provide your own mappings to the
+commands below. The default mappings are as follows:
+
+    nmap g= <Plug>(Express)
+    vmap g= <Plug>(Express)
+    nmap g== <Plug>(ExpressLine)
+
+For example, to change the Normal-mode mapping to `c=`, use the following:
+
+    nmap c= <Plug>(Express)
+
+This will use the mapping `cX`, and the default `cxx` will not be mapped.
+
+                                                *g:express_no_mappings*
+g:express_no_mappings ~
+
+If this variable is defined, the default mappings will not be created.
+
 ISSUES AND TODO                                 *express-issues* *express-todo*
 
 See https://github.com/tommcdo/vim-express/issues for bugs and issues.
