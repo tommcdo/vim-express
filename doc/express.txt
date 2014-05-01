@@ -51,7 +51,7 @@ For example, to change the Normal-mode mapping to `c=`, use the following:
 
     nmap c= <Plug>(Express)
 
-This will use the mapping `cX`, and the default `cxx` will not be mapped.
+This will use the mapping `c=`, and the default `g=` will not be mapped.
 
                                                 *g:express_no_mappings*
 g:express_no_mappings ~
