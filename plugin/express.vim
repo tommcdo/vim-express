@@ -3,11 +3,17 @@ function! s:express(type, ...)
 	if expression =~? '^\([gswbv]:\)\?[a-z][a-z0-9#:_]\+$'
 		let expression = expression.'(v:val)'
 	endif
+	call s:set(map([s:get(a:type, a:0)], expression)[0])
+	call s:repeat(expression)
+endfunction
+
+function! s:get(type, vis)
 	let a_reg = @a
 	let selection = &selection
+
 	set selection=inclusive
 	let selectcmd = "`[v`]"
-	if a:0
+	if a:vis
 		if a:type ==# 'v'
 			let selectcmd = "`<v`>"
 		elseif a:type ==# 'V'
@@ -19,11 +25,27 @@ function! s:express(type, ...)
 		endif
 	endif
 	execute 'normal!'.selectcmd.'"ay'
-	let @a = map([@a], expression)[0]
-	execute 'normal! '.selectcmd.'"ap'
-	silent! call repeat#set("\<Plug>(ExpressRepeat)".expression."\<CR>")
+	let value = @a
+	let &selection = selection
+
+	let @a = a_reg
+	return value
+endfunction
+
+function! s:set(value)
+	let a_reg = @a
+	let selection = &selection
+
+	set selection=inclusive
+	let @a = a:value
+	execute 'normal! gv"ap'
+
 	let &selection = selection
 	let @a = a_reg
+endfunction
+
+function! s:repeat(input)
+	silent! call repeat#set("\<Plug>(ExpressRepeat)".a:input."\<CR>")
 endfunction
 
 function! s:create_map(mode, lhs, rhs)
