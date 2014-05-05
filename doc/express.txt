@@ -26,6 +26,18 @@ g={motion}              Replace the text defined by {motion} with the value of
                                                 *g==*
 g==                     Like |g=|, but for the current line. |linewise|
 
+                                                *g:*
+g:{motion}              Like |g=|, but input `pattern/replace/flags` similar to
+                        |:substitute|. Individual lines are filtered through
+                        the |substitute()| function, as if invoked by |g=|
+                        using 'substitute(v:val, ...)'.
+                        NOTE: Despite looking like a |:substitute| command,
+                        this is really a call to |substitute()|, so some
+                        behaviour may differ.
+
+                                                *g::*
+g::                     Like |g:|, but for the current line. |linewise|
+
 EXAMPLES                                        *express-examples*
 
 Consider the following text:

@@ -7,6 +7,17 @@ function! s:express(type, ...)
 	call s:repeat(expression)
 endfunction
 
+function! s:subpress(type, ...)
+	let input = input(':s/')
+	let args = split(input, '\\\@<!/')
+	if len(args) == 2
+		let args = args + ['']
+	endif
+	let lines = split(s:get(a:type, a:0), "\n")
+	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"))
+	call s:repeat(input)
+endfunction
+
 function! s:get(type, vis)
 	let a_reg = @a
 	let selection = &selection
@@ -55,9 +66,14 @@ function! s:create_map(mode, lhs, rhs)
 endfunction
 
 nnoremap <silent> <Plug>(ExpressRepeat) .
+
 nnoremap <silent> <Plug>(Express) :<C-U>set operatorfunc=<SID>express<CR>g@
 nnoremap <silent> <Plug>(ExpressLine) :<C-U>set operatorfunc=<SID>express<CR>g@_
 vnoremap <silent> <Plug>(Express) :<C-U>call <SID>express(visualmode(), 1)<CR>
+
+nnoremap <silent> <Plug>(Subpress) :<C-U>set operatorfunc=<SID>subpress<CR>g@
+nnoremap <silent> <Plug>(SubpressLine) :<C-U>set operatorfunc=<SID>subpress<CR>g@_
+vnoremap <silent> <Plug>(Subpress) :<C-U>call <SID>subpress(visualmode(), 1)<CR>
 
 if exists('g:express_no_mappings')
 	finish
@@ -66,3 +82,7 @@ endif
 call s:create_map('n', 'g=', '<Plug>(Express)')
 call s:create_map('n', 'g==', '<Plug>(ExpressLine)')
 call s:create_map('v', 'g=', '<Plug>(Express)')
+
+call s:create_map('n', 'g:', '<Plug>(Subpress)')
+call s:create_map('n', 'g::', '<Plug>(SubpressLine)')
+call s:create_map('v', 'g:', '<Plug>(Subpress)')

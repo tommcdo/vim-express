@@ -15,6 +15,12 @@ Replace the text defined by {motion} with the value of an expression. The
 expression is entered at the command-line (with an '=' prompt). The original
 text will populate the value of `v:val` within the expression.
 
+`g:{motion}`
+
+Filter the text defined by {motion} through a `:subsitute`-like command. This
+is basically the same as using `g=` and entering `substitute(v:val, ...)`, but
+it's a bit easier (and more familiar) to type.
+
 Examples
 --------
 
