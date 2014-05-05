@@ -1,5 +1,8 @@
 function! s:express(type, ...)
 	let expression = input('=', '', 'expression')
+	if expression == ''
+		return
+	endif
 	if expression =~? '^\([gswbv]:\)\?[a-z][a-z0-9#:_]\+$'
 		let expression = expression.'(v:val)'
 	endif
@@ -9,6 +12,9 @@ endfunction
 
 function! s:subpress(type, ...)
 	let input = input(':s', '/')
+	if input == ''
+		return
+	endif
 	let args = split(input[1:], '\\\@<!'.input[0])
 	if len(args) == 2
 		let args = args + ['']
