@@ -8,14 +8,14 @@ function! s:express(type, ...)
 endfunction
 
 function! s:subpress(type, ...)
-	let input = input(':s/')
-	let args = split(input, '\\\@<!/')
+	let input = input(':s', '/')
+	let args = split(input, '\\\@<!'.input[0])
 	if len(args) == 2
 		let args = args + ['']
 	endif
 	let lines = split(s:get(a:type, a:0), "\n")
 	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"))
-	call s:repeat(input)
+	call s:repeat("\<BS>".input)
 endfunction
 
 function! s:get(type, vis)
