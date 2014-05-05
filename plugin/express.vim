@@ -9,7 +9,7 @@ endfunction
 
 function! s:subpress(type, ...)
 	let input = input(':s', '/')
-	let args = split(input, '\\\@<!'.input[0])
+	let args = split(input[1:], '\\\@<!'.input[0])
 	if len(args) == 2
 		let args = args + ['']
 	endif
