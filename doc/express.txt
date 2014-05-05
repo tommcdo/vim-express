@@ -24,7 +24,7 @@ g={motion}              Replace the text defined by {motion} with the value of
                         using `v:val` as its argument.
 
                                                 *g==*
-g=={motion}             Like |g=|, but for the current line. |linewise|
+g==                     Like |g=|, but for the current line. |linewise|
 
 EXAMPLES                                        *express-examples*
 
