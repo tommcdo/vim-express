@@ -5,6 +5,8 @@ function! s:express(type, ...)
 	endif
 	if expression =~? '^\([gswbv]:\)\?[a-z][a-z0-9#:_]\+$'
 		let expression = expression.'(v:val)'
+	elseif expression =~? '^!'
+		let expression = 'system("'.escape(expression[1:], '"\').'", v:val)'
 	endif
 	call s:set(map([s:get(a:type, a:0)], expression)[0])
 	call s:repeat(expression)
