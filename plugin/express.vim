@@ -8,7 +8,8 @@ function! s:express(type, ...)
 	elseif expression =~? '^!'
 		let expression = 'system("'.escape(expression[1:], '"\').'", v:val)'
 	endif
-	call s:set(map([s:get(a:type, a:0)], expression)[0])
+	let [value, regtype] = s:get(a:type, a:0)
+	call s:set(map([value], expression)[0], regtype)
 	call s:repeat(expression)
 endfunction
 
@@ -21,13 +22,14 @@ function! s:subpress(type, ...)
 	if len(args) == 2
 		let args = args + ['']
 	endif
-	let lines = split(s:get(a:type, a:0), "\n")
-	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"))
+	let [value, regtype] = s:get(a:type, a:0)
+	let lines = split(value, "\n")
+	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"), regtype)
 	call s:repeat("\<BS>".input)
 endfunction
 
 function! s:get(type, vis)
-	let a_reg = @a
+	let a_reg = s:getreg('a')
 	let selection = &selection
 
 	set selection=inclusive
@@ -37,6 +39,8 @@ function! s:get(type, vis)
 			let selectcmd = "`<v`>"
 		elseif a:type ==# 'V'
 			let selectcmd = "'<V'>"
+		elseif a:type ==# "\<C-V>"
+			let selectcmd = "`<\<C-V>`>"
 		endif
 	else
 		if a:type == 'line'
@@ -44,23 +48,31 @@ function! s:get(type, vis)
 		endif
 	endif
 	execute 'normal!'.selectcmd.'"ay'
-	let value = @a
+	let value = s:getreg('a')
 	let &selection = selection
 
-	let @a = a_reg
+	call s:setreg('a', a_reg)
 	return value
 endfunction
 
-function! s:set(value)
-	let a_reg = @a
+function! s:set(value, regtype)
+	let a_reg = s:getreg('a')
 	let selection = &selection
 
 	set selection=inclusive
-	let @a = a:value
+	call s:setreg('a', [a:value, a:regtype])
 	execute 'normal! gv"ap'
 
 	let &selection = selection
-	let @a = a_reg
+	call s:setreg('a', a_reg)
+endfunction
+
+function! s:getreg(regname)
+	return [getreg(a:regname), getregtype(a:regname)]
+endfunction
+
+function! s:setreg(regname, value)
+	call setreg(a:regname, a:value[0], a:value[1])
 endfunction
 
 function! s:repeat(input)
