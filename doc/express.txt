@@ -63,7 +63,7 @@ To change the default mappings, simply provide your own mappings to the
 commands below. The default mappings are as follows:
 
     nmap g= <Plug>(Express)
-    vmap g= <Plug>(Express)
+    xmap g= <Plug>(Express)
     nmap g== <Plug>(ExpressLine)
 
 For example, to change the Normal-mode mapping to `c=`, use the following:

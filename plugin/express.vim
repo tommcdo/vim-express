@@ -89,8 +89,8 @@ endif
 
 call s:create_map('n', 'g=', '<Plug>(Express)')
 call s:create_map('n', 'g==', '<Plug>(ExpressLine)')
-call s:create_map('v', 'g=', '<Plug>(Express)')
+call s:create_map('x', 'g=', '<Plug>(Express)')
 
 call s:create_map('n', 'g:', '<Plug>(Subpress)')
 call s:create_map('n', 'g::', '<Plug>(SubpressLine)')
-call s:create_map('v', 'g:', '<Plug>(Subpress)')
+call s:create_map('x', 'g:', '<Plug>(Subpress)')
