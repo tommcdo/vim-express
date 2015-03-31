@@ -1,21 +1,65 @@
 express.vim
 ===========
 
-express.vim defines some operators that allow you to change text according to a
-VimL expression or a substitution. Once invoked, an expression will be
-prompted. In the expression, `v:val` will represent the text being operated on
-(similar to Vim's map() function).
+Express yourself with custom operators. Define your own operators that apply
+either a VimL expression or a substitution to any motion or text object.
 
-Mappings
---------
+Custom operators
+----------------
 
-`g={motion}`
+# Express
+
+Expression opertors are created using the `:MapExpress` command. The expression
+makes use of the `v:val` placeholder, which contains the text covered by the
+given motion, and returns a string.
+
+For example, to create an operator `cd` that surrounds a motion in C-style
+comment delimiters, you can use the following command:
+
+    :MapExpress cd '/* ' . v:val . ' */'
+
+Now you can use the new operator `cd` on any motion or text object, such as
+`cdiw` to comment out a word, or `cdi(` to comment out everything inside
+parentheses.
+
+# Subpress
+
+Substitution operators are created using the `:MapSubpress` command. The
+substitution takes a form much like that of the `:substitute` command. It
+contains a search pattern, a replacement, and flags, each surrounded by some
+delimiter.
+
+As an example, to create an operator `yc` that capitalizes each word of a
+motion, you can use the following command:
+
+    :MapSubpress yc /\<\w/\u\0/g
+
+Now you can use the `yc` operator on any motion or text object, such as `yc)`
+to capitalize from the cursor to the beginning of the next sentence, or `ycap`
+to capitalize every word in the sentence.
+
+# NOTE
+
+At the time of loading your `.vimrc` file, the commands `:MapExpress` and
+`:MapSubpress` will likely not have been defined yet. To create operators using
+these commands in your `.vimrc`, you can use the `VimEnter` event, for example:
+
+    autocmd VimEnter * MapExpress cd '/*' . v:val . ' */'
+
+Ad-lib operators
+----------------
+
+Sometimes you just want to do a one-off (but repeatable) operation using a VimL
+expression or substitution. The `g=` and `g:` operators will let you do just
+that.
+
+# `g={motion}`
 
 Replace the text defined by {motion} with the value of an expression. The
 expression is entered at the command-line after a `=` prompt. The original text
 will populate the value of `v:val` within the expression.
 
-`g:{motion}`
+# `g:{motion}`
 
 Filter the text defined by {motion} through a `:substitute`-like command. This
 is basically the same as using `g=` and entering `substitute(v:val, ...)`, but
@@ -23,8 +67,7 @@ it's a bit easier (and more familiar) to type. A substitution is entered at the
 command-line after a `:s/` prompt. The `/` character in the prompt can be
 deleted and replaced with a different delimiter.
 
-Examples
---------
+# Examples
 
 Here are some examples of using the `g=` and `g:` operators. In the examples,
 the prompt is included in the Expression column. For `g=` operations, the

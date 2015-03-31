@@ -1,5 +1,5 @@
-function! s:express(type, ...)
-	let expression = input('=', '', 'expression')
+function! s:express_base(expression, type, vis)
+	let expression = a:expression
 	if expression == ''
 		return
 	endif
@@ -8,13 +8,22 @@ function! s:express(type, ...)
 	elseif expression =~? '^!'
 		let expression = 'system("'.escape(expression[1:], '"\').'", v:val)'
 	endif
-	let [value, regtype] = s:get(a:type, a:0)
+	let [value, regtype] = s:get(a:type, a:vis)
 	call s:set(map([value], expression)[0], regtype)
+endfunction
+
+function! s:express(type, ...)
+	let expression = input('=', '', 'expression')
+	call s:express_base(expression, a:type, a:0)
 	call s:repeat(expression)
 endfunction
 
-function! s:subpress(type, ...)
-	let input = input(':s', '/')
+function! s:express_custom(type, ...)
+	call s:express_base(s:express_custom[s:express_index], a:type, a:0)
+endfunction
+
+function! s:subpress_base(input, type, vis)
+	let input = a:input
 	if input == ''
 		return
 	endif
@@ -25,7 +34,32 @@ function! s:subpress(type, ...)
 	let [value, regtype] = s:get(a:type, a:0)
 	let lines = split(value, "\n")
 	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"), regtype)
+endfunction
+
+function! s:subpress(type, ...)
+	let input = input(':s', '/')
+	call s:subpress_base(input, a:type, a:0)
 	call s:repeat("\<BS>".input)
+endfunction
+
+function! s:subpress_custom(type, ...)
+	call s:subpress_base(s:express_custom[s:express_index], a:type, a:0)
+endfunction
+
+function! s:custom_setup(index)
+	let s:express_index = a:index
+endfunction
+
+function! s:custom_maps(op, mapping)
+	let words = split(a:mapping)
+	let lhs = words[0]
+	let rhs = join(words[1:])
+	if !exists('s:express_custom')
+		let s:express_custom = []
+	endif
+	let s:express_custom += [rhs]
+	execute 'nnoremap <silent>' lhs ':<C-U>call <SID>custom_setup('.(len(s:express_custom) - 1).')<CR>:set operatorfunc=<SID>'.a:op.'_custom<CR>g@'
+	execute 'xnoremap <silent>' lhs ':<C-U>call <SID>custom_setup('.(len(s:express_custom) - 1).')<CR>:call <SID>'.a:op.'_custom(visualmode(), 1)<CR>g@'
 endfunction
 
 function! s:get(type, vis)
@@ -94,6 +128,9 @@ vnoremap <silent> <Plug>(Express) :<C-U>call <SID>express(visualmode(), 1)<CR>
 nnoremap <silent> <Plug>(Subpress) :<C-U>set operatorfunc=<SID>subpress<CR>g@
 nnoremap <silent> <Plug>(SubpressLine) :<C-U>set operatorfunc=<SID>subpress<CR>g@_
 vnoremap <silent> <Plug>(Subpress) :<C-U>call <SID>subpress(visualmode(), 1)<CR>
+
+command! -nargs=+ MapExpress call s:custom_maps('express', <q-args>)
+command! -nargs=+ MapSubpress call s:custom_maps('subpress', <q-args>)
 
 if exists('g:express_no_mappings')
 	finish

@@ -12,6 +12,24 @@ according to a VimL |expression|. Once invoked, an expression will be
 prompted. In the expression, `v:val` will represent the text being operated
 on (similar to |map()|).
 
+COMMANDS                                        *express-commands*
+
+                                                *express-:MapExpress*
+:MapExpress {op} {expr}
+                        Create an operator which applies the VimL expression
+                        {expr} over the given text, and define |Normal| mode
+                        and |Visual| mode mappings using {op} as the left hand
+                        side of the mapping.
+                        See |eval.txt| for help on VimL expressions.
+
+                                                *express-:MapSubpress*
+:MapSubpress {op} /{pattern}/{string}/[flags]
+                        Create an operator which substitutes replaces
+                        {pattern} with {string} over the given text, and
+                        define |Normal| mode and |Visual| mode mappings using
+                        {op} as the left hand side of the mapping.
+                        See |:substitute| for help on substitutions.
+
 MAPPINGS                                        *express-mappings*
 
                                                 *g=*
