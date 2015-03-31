@@ -7,7 +7,7 @@ either a VimL expression or a substitution to any motion or text object.
 Custom operators
 ----------------
 
-# Express
+### Express
 
 Expression opertors are created using the `:MapExpress` command. The expression
 makes use of the `v:val` placeholder, which contains the text covered by the
@@ -22,7 +22,7 @@ Now you can use the new operator `cd` on any motion or text object, such as
 `cdiw` to comment out a word, or `cdi(` to comment out everything inside
 parentheses.
 
-# Subpress
+### Subpress
 
 Substitution operators are created using the `:MapSubpress` command. The
 substitution takes a form much like that of the `:substitute` command. It
@@ -38,7 +38,7 @@ Now you can use the `yc` operator on any motion or text object, such as `yc)`
 to capitalize from the cursor to the beginning of the next sentence, or `ycap`
 to capitalize every word in the sentence.
 
-# NOTE
+### NOTE
 
 At the time of loading your `.vimrc` file, the commands `:MapExpress` and
 `:MapSubpress` will likely not have been defined yet. To create operators using
@@ -53,13 +53,13 @@ Sometimes you just want to do a one-off (but repeatable) operation using a VimL
 expression or substitution. The `g=` and `g:` operators will let you do just
 that.
 
-# `g={motion}`
+### `g={motion}`
 
 Replace the text defined by {motion} with the value of an expression. The
 expression is entered at the command-line after a `=` prompt. The original text
 will populate the value of `v:val` within the expression.
 
-# `g:{motion}`
+### `g:{motion}`
 
 Filter the text defined by {motion} through a `:substitute`-like command. This
 is basically the same as using `g=` and entering `substitute(v:val, ...)`, but
@@ -67,7 +67,7 @@ it's a bit easier (and more familiar) to type. A substitution is entered at the
 command-line after a `:s/` prompt. The `/` character in the prompt can be
 deleted and replaced with a different delimiter.
 
-# Examples
+### Examples
 
 Here are some examples of using the `g=` and `g:` operators. In the examples,
 the prompt is included in the Expression column. For `g=` operations, the
