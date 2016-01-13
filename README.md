@@ -36,7 +36,7 @@ motion, you can use the following command:
 
 Now you can use the `yc` operator on any motion or text object, such as `yc)`
 to capitalize from the cursor to the beginning of the next sentence, or `ycap`
-to capitalize every word in the sentence.
+to capitalize every word in the paragraph.
 
 ### NOTE
 
