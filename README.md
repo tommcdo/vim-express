@@ -80,10 +80,10 @@ installed.
 
 Description | Operator + Motion | Expression | Before | After
 --- | --- | --- | --- | ---
-Change member names to getters (snake case) | `g=iw` | `=``'get_'.v:val.'()'` | `foo_bar` | `get_foo_bar()`
-Change member names to getters (camel case) | `g:iw` | `:s/``.*/get\u\0()/` | `fooBar` | `getFooBar()`
-Sort elements of an array literal | `g=i[` | `=``join(sort(split(v:val, ', ')), ', ')` | `[foo, bar, baz]` | `[bar, baz, foo]`
-Clean up whitespace around binary operators | `g::` (line) | `:s/``\s*\([=+*\/-]\)\s*/ \1 /g` | `int x=foo   + bar *baz` | `int x = foo + bar * baz`
-Comment out a block of code | `g=ip` | `=``'/* '.v:val.' */'` | `int x = 400;`<br/>`int y = 5;` | `/* int x = 400;`<br/>`int y = 5; */`
+Change member names to getters (snake case) | `g=iw` | `='get_'.v:val.'()'` | `foo_bar` | `get_foo_bar()`
+Change member names to getters (camel case) | `g:iw` | `:s/.*/get\u\0()/` | `fooBar` | `getFooBar()`
+Sort elements of an array literal | `g=i[` | `=join(sort(split(v:val, ', ')), ', ')` | `[foo, bar, baz]` | `[bar, baz, foo]`
+Clean up whitespace around binary operators | `g::` (line) | `:s/\s*\([=+*\/-]\)\s*/ \1 /g` | `int x=foo   + bar *baz` | `int x = foo + bar * baz`
+Comment out a block of code | `g=ip` | `='/* '.v:val.' */'` | `int x = 400;`<br/>`int y = 5;` | `/* int x = 400;`<br/>`int y = 5; */`
 
   [1]: https://github.com/tpope/vim-repeat
