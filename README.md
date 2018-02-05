@@ -86,4 +86,45 @@ Sort elements of an array literal | `g=i[` | `=join(sort(split(v:val, ', ')), ',
 Clean up whitespace around binary operators | `g::` (line) | `:s/\s*\([=+*\/-]\)\s*/ \1 /g` | `int x=foo   + bar *baz` | `int x = foo + bar * baz`
 Comment out a block of code | `g=ip` | `='/* '.v:val.' */'` | `int x = 400;`<br/>`int y = 5;` | `/* int x = 400;`<br/>`int y = 5; */`
 
+Operators taking user input
+---------------------------
+
+Some operators take input from the user to perform a change. Without some etra
+setup, repeating the operaton with `.` would prompt the user for input again.
+To help avoid this, express.vim offers an interface to use in operator
+definitions that hook into [repeat.vim][1].
+
+### Capturing user input
+
+To make user input automatically inserted upon repeat (using `.`), enclose the
+part of code that prompts for input in `express#capture()`.
+
+For example, if defining an operator to replace all characters with a character
+input by the user, you can capture the use input as follows:
+
+    :MapSubpress cr /./\=express#capture(nr2char(getchar()))/g
+
+Some methods of user input require additional keystokes such as pressing Enter
+to terminate the input sequence. To accomodate for this, additional characters
+can be provided as a second argument to `express#capture()`. For example,
+appending a user-input string to the end of the motion:
+
+    :MapExpress dc v:val . express#capture(input('Suffix: '), "\<CR>")
+
+Here, `"\<CR>"` is the carriage return typed after inputting a string with
+`input()`. The result of the function does not include the carriage return, but
+the user must type it to terminate input.
+
+### Recalling captured input
+
+If you want a value taken from a single input prompt to be used in multiple
+places in your operator's expression, you can recall any portion captured by
+`express#capture()` using `express#recall(n)`, where `n` is the position of the
+call to `express#capture()` in the expression (similar to backreferences in
+regex).
+
+For example, to enclose a motion in an input string, we can do something like this:
+
+    :MapExpress yp express#capture(input('Enclosing: '), "\<CR>") . v:val . express#recall(1)
+
   [1]: https://github.com/tpope/vim-repeat

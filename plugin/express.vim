@@ -13,13 +13,15 @@ function! s:express_base(expression, type, vis)
 endfunction
 
 function! s:express(type, ...)
+	call s:custom_setup(-1)
 	let expression = input('=', '', 'expression')
 	call s:express_base(expression, a:type, a:0)
-	call s:repeat(expression)
+	call s:repeat(expression."\<CR>".s:get_capture())
 endfunction
 
 function! s:express_custom(type, ...)
 	call s:express_base(s:express_custom[s:express_index], a:type, a:0)
+	call s:repeat(s:get_capture())
 endfunction
 
 function! s:subpress_base(input, type, vis)
@@ -37,17 +39,36 @@ function! s:subpress_base(input, type, vis)
 endfunction
 
 function! s:subpress(type, ...)
+	call s:custom_setup(-1)
 	let input = input(':s', '/')
 	call s:subpress_base(input, a:type, a:0)
-	call s:repeat("\<BS>".input)
+	call s:repeat("\<BS>".input."\<CR>".s:get_capture())
 endfunction
 
 function! s:subpress_custom(type, ...)
 	call s:subpress_base(s:express_custom[s:express_index], a:type, a:0)
+	call s:repeat(s:get_capture())
+endfunction
+
+function! express#capture(input, ...)
+	let suffix = join(a:000, '')
+	let s:express_capture .= a:input.suffix
+	let s:express_captures += [a:input]
+	return a:input
+endfunction
+
+function! express#recall(index)
+	return get(s:express_captures, a:index, '')
+endfunction
+
+function! s:get_capture()
+	return s:express_capture
 endfunction
 
 function! s:custom_setup(index)
+	let s:express_capture = ''
 	let s:express_index = a:index
+	let s:express_captures = ['']
 endfunction
 
 function! s:custom_maps(op, mapping)
@@ -110,7 +131,7 @@ function! s:setreg(regname, value)
 endfunction
 
 function! s:repeat(input)
-	silent! call repeat#set("\<Plug>(ExpressRepeat)".a:input."\<CR>")
+	silent! call repeat#set("\<Plug>(ExpressRepeat)".a:input)
 endfunction
 
 function! s:create_map(mode, lhs, rhs)
