@@ -46,7 +46,7 @@ these commands in your `.vimrc`, you can use the `VimEnter` event, for example:
 
     autocmd VimEnter * MapExpress cd '/*' . v:val . ' */'
 
-Ad-lib operators
+Ad-hoc operators
 ----------------
 
 Sometimes you just want to do a one-off (but repeatable) operation using a VimL
