@@ -30,6 +30,12 @@ COMMANDS                                        *express-commands*
                         {op} as the left hand side of the mapping.
                         See |:substitute| for help on substitutions.
 
+                                                *express-<buffer>*
+When you want a mapping to apply only to the current buffer, prepend <buffer>
+to the left hand side of the mapping.
+
+    :MapExpress <buffer>cd '/* ' . v:val . ' */'
+
 MAPPINGS                                        *express-mappings*
 
                                                 *g=*

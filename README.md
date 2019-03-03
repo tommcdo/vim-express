@@ -38,6 +38,13 @@ Now you can use the `yc` operator on any motion or text object, such as `yc)`
 to capitalize from the cursor to the beginning of the next sentence, or `ycap`
 to capitalize every word in the paragraph.
 
+### Buffer-local mappings
+
+When you want a mapping to apply only to the current buffer, prepend `<buffer>`
+to the left hand side of the mapping.
+
+    :MapExpress <buffer>cd '/* ' . v:val . ' */'
+
 ### NOTE
 
 At the time of loading your `.vimrc` file, the commands `:MapExpress` and
