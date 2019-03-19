@@ -33,7 +33,7 @@ function! s:subpress_base(input, type, vis)
 	if len(args) == 2
 		let args = args + ['']
 	endif
-	let [value, regtype] = s:get(a:type, a:0)
+	let [value, regtype] = s:get(a:type, a:vis)
 	let lines = split(value, "\n")
 	call s:set(join(map(lines, 'call("substitute", [v:val] + args)'), "\n"), regtype)
 endfunction
